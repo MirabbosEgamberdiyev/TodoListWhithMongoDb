@@ -1,8 +1,9 @@
+using MongoDB.Bson;
+
 namespace TodoList.Models;
 
-public class Todo
+public class TodoItem
 {
-    public int Id { get; set; }
-
+    public ObjectId Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
