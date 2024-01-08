@@ -17,24 +17,27 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-10">
-
                     <form asp-action="Insert" method="post" class="form-horizontal" role="form">
                         <div asp-validation-summary="All" class="text-danger"></div>
 
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center align-content-center">
                             <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10">
-                                <label asp-for="Todo.Name" class="form-label">Todo Name</label>
-                                <input asp-for="Todo.Id" type="hidden" class="form-control" />
+                                <label asp-for="Todo.Name" class="form-label"><strong>My Tasks</strong></label>
                                 <input asp-for="Todo.Name" class="form-control" />
                                 <span asp-validation-for="Todo.Name" class="text-danger"></span>
                             </div>
                         </div>
+
                         <div class="row justify-content-center">
                             <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10 mt-3 mb-5">
-                                <input type="submit" class="btn btn-success" value="Add Todo" />
+                                @{
+                                    var name = Model.Todo is not null ? Model.Todo.Name : "Save";
+                                }
+                                <input type="submit" class="btn btn-success px-4" value="Add" />
                             </div>
                         </div>
                     </form>
+
                     <main role="main" class="pb-3">
                         @RenderBody()
                     </main>

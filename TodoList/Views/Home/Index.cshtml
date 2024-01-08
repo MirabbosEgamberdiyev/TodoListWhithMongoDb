@@ -1,50 +1,44 @@
 ﻿@model TodoViewModel
 
 <div class="row justify-content-center">
-    <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10">
         <div class="table-container">
-            <table class="table">
+            <table class="table ">
                 <thead>
                     <tr class="table-primary">
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col" class="todos-column">Name</th>
+                        <th scope="col" class="buttons-column">
+                            Actions
+                        </th>
                     </tr>
+
                 </thead>
                 <tbody>
                     @foreach (var t in Model.TodoList)
                     {
                         <tr>
-                            <th class="todos-column" scope="row">@t.Id</th>
                             <td class="todos-column">@t.Name</td>
                             <td class="buttons-column">
                                 <button class="btn btn-sm btn-danger" onclick="deleteTodo('@t.Id')">Delete</button>
-                                <button class="btn btn-sm btn-primary" onclick="populateForm('@t.Id')">Update</button>
+                                <form method="get" action="@Url.Action("Update", "Home")" style="display: inline;">
+                                    <input type="hidden" name="id" value="@t.Id" />
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
                             </td>
                         </tr>
                     }
                 </tbody>
+
             </table>
         </div>
     </div>
 </div>
-
 <script>
     function deleteTodo(id) {
         if (confirm('Are you sure you want to delete this todo?')) {
             $.post('/Home/Delete', { id: id }, function (data) {
-         
                 location.reload();
             });
         }
     }
-
-    function populateForm(id) {
-        $.get('/Home/PopulateForm', { id: id }, function (data) {
-
-            $('#todoId').val(data.id);
-            $('#todoName').val(data.name);
-        });
-    }
 </script>
-

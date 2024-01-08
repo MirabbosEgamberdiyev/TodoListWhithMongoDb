@@ -38,6 +38,11 @@ public class HomeController : Controller
     {
         if (ModelState.IsValid)
         {
+            if (todo.Name.Length > 50)
+            {
+                return BadRequest("Error: Todo name should be 25 characters or less.");
+            }
+
             var todoItem = new TodoItem { Name = todo.Name };
             _todoCollection.InsertOne(todoItem);
         }
@@ -45,11 +50,29 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
 
+
     [HttpPost]
     public JsonResult Delete(ObjectId id)
     {
         _todoCollection.DeleteOne(t => t.Id == id);
         return Json(new { success = true });
+    }
+    [HttpGet]
+    public IActionResult Update(string id)
+    {
+        var todo = _todoCollection.Find(i => i.Id == ObjectId.Parse(id)).FirstOrDefault();
+        Delete(ObjectId.Parse(id));
+
+        if (todo != null)
+        {
+            TodoViewModel todoModel = new TodoViewModel
+            {
+                Todo = todo
+            };
+
+            return View("Index", todoModel);
+        }
+        return RedirectToAction("Index");
     }
 
     [HttpPost]
